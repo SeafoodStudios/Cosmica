@@ -1,5 +1,6 @@
 from tinydb import TinyDB, Query
 import urllib.robotparser
+from urllib.parse import urlparse
 import requests
 import re
 import time
@@ -13,16 +14,21 @@ while True:
     all_items = db.all()
     if all_items:
         try:
-            dice = random.randint(0, len(all_items)-1)
-            print((str(all_items[dice]["link"].rstrip("/"))) + "/robots.txt")
-            rp.set_url((str(all_items[dice]["link"].rstrip("/"))) + "/robots.txt")
-            rp.read()
-            
-            if rp.crawl_delay("*") == None:
+            try:
+                dice = random.randint(0, len(all_items)-1)
+                parsed = urlparse(all_items[dice]["link"])
+                domain = f"{parsed.scheme}://{parsed.netloc}"
+                rp.set_url(domain.rstrip("/") + "/robots.txt")
+                rp.read()
+                
+                if rp.crawl_delay("*") == None:
+                    time.sleep(5)
+                else:
+                    time.sleep(rp.crawl_delay("*"))
+            except Exception as e:
+                print("ERROR: " + str(e))
                 time.sleep(5)
-            else:
-                time.sleep(rp.crawl_delay("*"))
-
+                
             headers = {"User-Agent": "Mozilla/5.0 (compatible; CosmicaBot/1.0)"}
             data = requests.get(all_items[dice]["link"],headers=headers)
             links = re.findall(r'https?://[^\s"\'<>]+', str(data.text))
@@ -35,4 +41,4 @@ while True:
         except Exception as e:
             print("ERROR: " + str(e))
     else:
-        db.insert({'link': "https://news.ycombinator.com/"})
+        db.insert({'link': "https://alltop.com"})
