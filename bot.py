@@ -14,12 +14,12 @@ while True:
     all_items = db.all()
     if all_items:
         try:
+            dice = random.randint(0, len(all_items)-1)
             try:
-                dice = random.randint(0, len(all_items)-1)
                 parsed = urlparse(all_items[dice]["link"])
                 domain = f"{parsed.scheme}://{parsed.netloc}"
-                rp.set_url(domain.rstrip("/") + "/robots.txt")
-                rp.read()
+                res = requests.get(domain.rstrip("/") + "/robots.txt", timeout=10)
+                rp.parse(res.text.splitlines())
                 
                 if rp.crawl_delay("*") == None:
                     time.sleep(5)
@@ -30,7 +30,7 @@ while True:
                 time.sleep(5)
                 
             headers = {"User-Agent": "Mozilla/5.0 (compatible; CosmicaBot/1.0)"}
-            data = requests.get(all_items[dice]["link"],headers=headers)
+            data = requests.get(all_items[dice]["link"],headers=headers, timeout=10)
             links = re.findall(r'https?://[^\s"\'<>]+', str(data.text))
             
             for i in range(len(links)):
