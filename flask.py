@@ -1,0 +1,34 @@
+from flask import Flask, Response, redirect, request
+from urllib.parse import unquote
+import requests
+import ast
+import random
+
+app = Flask(__name__)
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    if request.method == 'POST':
+        query = request.form['Search']
+        return redirect(f"/search/{query}")
+    return '''
+    <img src="https://cosmica.pythonanywhere.com/logo.png" alt="Logo for Cosmica" width="200"><br>
+        <form method="post">
+            <input type="text" name="Search" placeholder="Search the universe!">
+            <input type="submit" value="Search">
+        </form>
+    '''
+
+@app.route('/search/<path:subpath>', methods=['GET'])
+def search(subpath):
+    userinput = unquote(subpath)
+    data = requests.get("https://33bf-2607-fea8-84e3-f800-e8c5-75b2-40b2-f82d.ngrok-free.app/search/" + str(userinput.replace(" ", "-")))
+    if str(data.text) == "[]":
+        return Response(f"""<a href="https://cosmica.pythonanywhere.com/"> <img src="https://cosmica.pythonanywhere.com/logo.png" alt="Logo" width="200"> </a><br>""" + "No results, sorry!", mimetype='text/html')
+    else:
+        unparsedresults = ast.literal_eval(data.text)
+        parsedresults = []
+        for i in range(len(unparsedresults)):
+            parsedresults.append("<a href=" + str(unparsedresults[i]["link"]) + ">" + str(unparsedresults[i]["link"]) + "</a>")
+        random.shuffle(parsedresults)
+        return Response(f"""<a href="https://cosmica.pythonanywhere.com/"> <img src="https://cosmica.pythonanywhere.com/logo.png" alt="Logo" width="200"> </a><br>""" + str("<br><br>".join(parsedresults[:10])), mimetype='text/html')
