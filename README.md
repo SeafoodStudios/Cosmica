@@ -11,4 +11,5 @@ Its features include:
 - Simple, user-friendly interface.
 
 > Thank you for reading this, and I hope you enjoy Cosmica!
+
 > SeafoodStudios
