@@ -9,3 +9,6 @@ Its features include:
 - A safe, polite and ethical web scraper.
 - Fully open source.
 - Simple, user-friendly interface.
+
+> Thank you for reading this, and I hope you enjoy Cosmica!
+> SeafoodStudios
