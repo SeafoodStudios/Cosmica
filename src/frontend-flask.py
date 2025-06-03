@@ -1,8 +1,9 @@
 from flask import Flask, Response, redirect, request
-from urllib.parse import unquote
+from urllib.parse import unquote, quote
 import requests
 import ast
 import random
+import spacy
 
 app = Flask(__name__)
 
@@ -10,7 +11,15 @@ app = Flask(__name__)
 def index():
     if request.method == 'POST':
         query = request.form['Search']
-        return redirect(f"/search/{query}")
+        nlp = spacy.load("en_core_web_sm")
+        doc = nlp(query)
+        search = []
+        for token in doc:
+            if token.pos_ == "NOUN" or token.pos_ == "PROPN":
+                search.append(str(token.text))
+        if not search:
+            search = query.split()
+        return redirect("/search/" + str(quote(" ".join(search))))
     return '''
     <img src="https://cosmica.pythonanywhere.com/logo.png" alt="Logo for Cosmica" width="200"><br>
         <form method="post">
