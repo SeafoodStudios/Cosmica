@@ -10,6 +10,4 @@ Its features include:
 - Fully open source.
 - Simple, user-friendly interface.
 
-> Thank you for reading this, and I hope you enjoy Cosmica!
-
-> SeafoodStudios
+> Thank you for reading this, and I hope you enjoy Cosmica!\nSeafoodStudios
