@@ -35,7 +35,7 @@ while True:
                 time.sleep(5)
             url = all_items[dice]["link"]
             user_agent = "CosmicaBot"
-            headers = {"User-Agent": "Mozilla/5.0 (compatible; CosmicaBot/1.0)"}
+            headers = {"User-Agent": "CosmicaBot"}
             if rp.can_fetch(user_agent, url):
                 data = requests.get(all_items[dice]["link"],headers=headers, timeout=10)
                 links = re.findall(r'https?://[^\s"\'<>]+', str(data.text))
