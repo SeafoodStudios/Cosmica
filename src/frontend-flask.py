@@ -6,12 +6,12 @@ import random
 import spacy
 
 app = Flask(__name__)
+nlp = spacy.load("en_core_web_sm")
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
         query = request.form['Search']
-        nlp = spacy.load("en_core_web_sm")
         doc = nlp(query)
         search = []
         for token in doc:
@@ -21,11 +21,43 @@ def index():
             search = query.split()
         return redirect("/search/" + str(quote(" ".join(search))))
     return '''
-    <img src="https://cosmica.pythonanywhere.com/logo.png" alt="Logo for Cosmica" width="200"><br>
+    <!DOCTYPE html>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <html>
+    <head>
+    <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+    }
+
+    .center {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      text-align: center;
+    }
+
+    input {
+      margin: 0px 0 0 0;
+    }
+    img {
+      margin: 0;
+    }
+    </style>
+    </head>
+    <body>
+    <div class="center">
+    <img src="https://cosmica.pythonanywhere.com/logo.png" alt="Logo for Cosmica" width="200">
         <form method="post">
             <input type="text" name="Search" placeholder="Search the universe!">
             <input type="submit" value="Search">
         </form>
+    </div>
+    </body>
+    </html>
     '''
 
 @app.route('/search/<path:subpath>', methods=['GET'])
