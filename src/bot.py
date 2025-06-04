@@ -34,7 +34,7 @@ while True:
                 print("ERROR: " + str(e))
                 time.sleep(5)
             url = all_items[dice]["link"]
-            user_agent = "Mozilla/5.0 (compatible; CosmicaBot/1.0)"
+            user_agent = "CosmicaBot"
             headers = {"User-Agent": "Mozilla/5.0 (compatible; CosmicaBot/1.0)"}
             if rp.can_fetch(user_agent, url):
                 data = requests.get(all_items[dice]["link"],headers=headers, timeout=10)
