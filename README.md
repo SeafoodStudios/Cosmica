@@ -24,4 +24,4 @@ Here's how Cosmica works:
 3. Another Flask app is used to access the previous API, to make it look smoother, which is the frontend.
 
 Thank you for reading this, and I hope you enjoy Cosmica!
-- SeafoodStudios
+\- SeafoodStudios
