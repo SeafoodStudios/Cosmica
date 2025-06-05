@@ -9,6 +9,8 @@ Its features include:
 - A safe, polite and ethical web scraper.
 - Fully open source.
 - Simple, user-friendly interface.
+- Custom crawler.
+- Not Big Tech.
 
 > Thank you for reading this, and I hope you enjoy Cosmica!
 >
