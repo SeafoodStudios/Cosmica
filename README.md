@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/SeafoodStudios/Cosmica/refs/heads/main/static/logo.png" height="100px">
+<img src="https://raw.githubusercontent.com/SeafoodStudios/Cosmica/refs/heads/main/static/logo.png" height="100px" style="vertical-align: middle; margin-bottom: -10px;">
 
 Cosmica is a free, open source search engine that allows you to browse the web without personalization. Nowadays, large tech companies are creating search engines that log and store your data to be sold to companies and to personalize your experience. Therefore, you won't be able to access most of the diverse Internet. Cosmica, on the other hand, allows you to see the more diverse, better Internet freely.
 
