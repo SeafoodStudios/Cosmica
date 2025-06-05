@@ -12,6 +12,11 @@ Its features include:
 - Custom crawler.
 - Not Big Tech.
 
+Here's how Cosmica works:
+1. Cosmica scrapes the web, starting from a seed URL and finding links in that URL's page, saving it in the database, finding another seed URL, while respecting the "robots.txt" rules.
+2. Then, a Flask REST API makes this database available through a Python list of dictionaries format.
+3. Another Flask app is used to access the previous API, to make it look smoother, which is the frontend.
+
 > Thank you for reading this, and I hope you enjoy Cosmica!
 >
 > SeafoodStudios
