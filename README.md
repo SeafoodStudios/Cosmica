@@ -1,7 +1,7 @@
 <table>
   <tr>
-    <td><h1>Cosmica Search Engine</h1></td>
     <td><img src="https://raw.githubusercontent.com/SeafoodStudios/Cosmica/refs/heads/main/static/logo.png" height="100px"></td>
+    <td><h1>Search Engine</h1></td>
   </tr>
 </table>
 
