@@ -1,12 +1,23 @@
 from flask import Flask, Response, redirect, request
+from markupsafe import escape
 from urllib.parse import unquote, quote
 import requests
 import ast
 import random
 import spacy
+import time
+from groq import Groq
 
 app = Flask(__name__)
 nlp = spacy.load("en_core_web_sm")
+client = Groq(api_key="YOUR_API_KEY")
+
+global then
+then = time.time()
+global now
+now = time.time()
+global ai_limit
+ai_limit = 0
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -62,10 +73,27 @@ def index():
 
 @app.route('/search/<path:subpath>', methods=['GET'])
 def search(subpath):
+    global ai_limit
+    global then
+    global now
     userinput = unquote(subpath)
     data = requests.get("https://33bf-2607-fea8-84e3-f800-e8c5-75b2-40b2-f82d.ngrok-free.app/search/" + str(userinput.replace(" ", "-")))
     if str(data.text) == "[]":
-        return Response(f"""<a href="https://cosmica.pythonanywhere.com/"> <img src="https://cosmica.pythonanywhere.com/logo.png" alt="Logo" width="200"> </a><br>""" + "No results, sorry!", mimetype='text/html')
+        now = time.time()
+        if (now - then) >= 60:
+            ai_limit = 0
+            then = now
+
+        if ai_limit < 10:
+            ai_limit += 1
+            completion = client.chat.completions.create(
+                    model="llama3-8b-8192",
+                    messages=[{"role": "user", "content": str(userinput)}]
+            )
+            aioutput = str(completion.choices[0].message.content)
+            return Response(f"""<a href="https://cosmica.pythonanywhere.com/"> <img src="https://cosmica.pythonanywhere.com/logo.png" alt="Logo" width="200"> </a><br>""" + f"""Looks like the universe couldn't find what you were looking for. Instead, we'll have the help of an alien to help you!<br><br><div style="white-space: pre-wrap; word-wrap: break-word; max-width: 100%; overflow-wrap: break-word;">""" + aioutput + "</div>", mimetype='text/html')
+        else:
+            return Response(f"""<a href="https://cosmica.pythonanywhere.com/"> <img src="https://cosmica.pythonanywhere.com/logo.png" alt="Logo" width="200"> </a><br>""" + "No results, sorry! Space can be quite lonely sometimes, but eventually, you'll find something.", mimetype='text/html')
     else:
         unparsedresults = ast.literal_eval(data.text)
         parsedresults = []
