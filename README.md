@@ -16,7 +16,7 @@ Its features include:
 - Simple, user-friendly interface.
 - Custom crawler.
 - Not big tech, made by a single developer.
-- We don't share your data.
+- If our search engine can't find it, the AI will.
 
 Here's how Cosmica works:
 1. Cosmica scrapes the web, starting from a seed URL and finding links in that URL's page, saving it in the database, finding another seed URL, while respecting the "robots.txt" rules.
