@@ -4,12 +4,10 @@ from urllib.parse import unquote, quote
 import requests
 import ast
 import random
-import spacy
 import time
 from groq import Groq
 
 app = Flask(__name__)
-nlp = spacy.load("en_core_web_sm")
 client = Groq(api_key="YOUR_API_KEY")
 
 global then
@@ -23,13 +21,7 @@ ai_limit = 0
 def index():
     if request.method == 'POST':
         query = request.form['Search']
-        doc = nlp(query)
-        search = []
-        for token in doc:
-            if token.pos_ == "NOUN" or token.pos_ == "PROPN":
-                search.append(str(token.text))
-        if not search:
-            search = query.split()
+        search = query.split()
         return redirect("/search/" + str(quote(" ".join(search))))
     return '''
     <!DOCTYPE html>
