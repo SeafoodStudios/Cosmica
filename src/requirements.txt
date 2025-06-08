@@ -1,2 +1,4 @@
 tinydb
 flask
+groq
+markupsafe
