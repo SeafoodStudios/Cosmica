@@ -4,11 +4,13 @@ from urllib.parse import unquote, quote
 import requests
 import ast
 import random
+import bleach
+import markdown
 import time
 from groq import Groq
 
 app = Flask(__name__)
-client = Groq(api_key="API_KEY")
+client = Groq(api_key="YOUR_GROQ_API_KEY_HERE")
 
 global then
 then = time.time()
@@ -84,7 +86,13 @@ def search(subpath):
                     model="llama3-8b-8192",
                     messages=[{"role": "user", "content": str(userinput)}]
             )
-            aioutput = str(completion.choices[0].message.content)
+            aioutput = markdown.markdown(str(completion.choices[0].message.content), extensions=['extra'])
+            aioutput = bleach.clean(
+                aioutput,
+                tags = list(bleach.sanitizer.ALLOWED_TAGS) + ["p", "br", "h1", "h2", "h3", "code", "pre", "strong", "em", "a", "u", "i", "ul", "ol", "li"],
+                attributes={'a': ['href']},
+                strip=True
+            )
             return Response(f"""<title>Cosmica Search Engine</title><a href="https://cosmica.pythonanywhere.com/"> <img src="https://cosmica.pythonanywhere.com/logo.png" alt="Logo" width="200"> </a><br>""" + f"""Looks like the universe couldn't find what you were looking for. Instead, we'll have the help of an alien to help you!<br><br><div style="white-space: pre-wrap; word-wrap: break-word; max-width: 100%; overflow-wrap: break-word;">""" + aioutput + "</div>", mimetype='text/html')
         else:
             return Response(f"""<title>Cosmica Search Engine</title><a href="https://cosmica.pythonanywhere.com/"> <img src="https://cosmica.pythonanywhere.com/logo.png" alt="Logo" width="200"> </a><br>""" + "No results, sorry! Space can be quite lonely sometimes, but eventually, you'll find something.", mimetype='text/html')
