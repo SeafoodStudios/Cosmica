@@ -8,7 +8,7 @@ import time
 from groq import Groq
 
 app = Flask(__name__)
-client = Groq(api_key="YOUR_API_KEY")
+client = Groq(api_key="API_KEY")
 
 global then
 then = time.time()
@@ -28,6 +28,7 @@ def index():
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <html>
     <head>
+    <title>Cosmica Search Engine</title>
     <style>
     body, html {
       height: 100%;
@@ -59,6 +60,7 @@ def index():
             <input type="submit" value="Search">
         </form>
     </div>
+    <a href="https://www.producthunt.com/products/cosmica?embed=true&utm_source=badge-featured&utm_medium=badge&utm_source=badge-cosmica" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=974665&theme=neutral&t=1749324211335" alt="Cosmica - Data&#0032;privacy&#0032;and&#0032;non&#0032;big&#0032;tech&#0032;focused&#0032;search&#0032;engine&#0046; | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
     </body>
     </html>
     '''
@@ -83,13 +85,13 @@ def search(subpath):
                     messages=[{"role": "user", "content": str(userinput)}]
             )
             aioutput = str(completion.choices[0].message.content)
-            return Response(f"""<a href="https://cosmica.pythonanywhere.com/"> <img src="https://cosmica.pythonanywhere.com/logo.png" alt="Logo" width="200"> </a><br>""" + f"""Looks like the universe couldn't find what you were looking for. Instead, we'll have the help of an alien to help you!<br><br><div style="white-space: pre-wrap; word-wrap: break-word; max-width: 100%; overflow-wrap: break-word;">""" + aioutput + "</div>", mimetype='text/html')
+            return Response(f"""<title>Cosmica Search Engine</title><a href="https://cosmica.pythonanywhere.com/"> <img src="https://cosmica.pythonanywhere.com/logo.png" alt="Logo" width="200"> </a><br>""" + f"""Looks like the universe couldn't find what you were looking for. Instead, we'll have the help of an alien to help you!<br><br><div style="white-space: pre-wrap; word-wrap: break-word; max-width: 100%; overflow-wrap: break-word;">""" + aioutput + "</div>", mimetype='text/html')
         else:
-            return Response(f"""<a href="https://cosmica.pythonanywhere.com/"> <img src="https://cosmica.pythonanywhere.com/logo.png" alt="Logo" width="200"> </a><br>""" + "No results, sorry! Space can be quite lonely sometimes, but eventually, you'll find something.", mimetype='text/html')
+            return Response(f"""<title>Cosmica Search Engine</title><a href="https://cosmica.pythonanywhere.com/"> <img src="https://cosmica.pythonanywhere.com/logo.png" alt="Logo" width="200"> </a><br>""" + "No results, sorry! Space can be quite lonely sometimes, but eventually, you'll find something.", mimetype='text/html')
     else:
         unparsedresults = ast.literal_eval(data.text)
         parsedresults = []
         for i in range(len(unparsedresults)):
             parsedresults.append("<a href=" + str(unparsedresults[i]["link"]) + ">" + str(unparsedresults[i]["link"]) + "</a>")
         random.shuffle(parsedresults)
-        return Response(f"""<a href="https://cosmica.pythonanywhere.com/"> <img src="https://cosmica.pythonanywhere.com/logo.png" alt="Logo" width="200"> </a><br>""" + str("<br><br>".join(parsedresults[:10])), mimetype='text/html')
+        return Response(f"""<title>Cosmica Search Engine</title><a href="https://cosmica.pythonanywhere.com/"> <img src="https://cosmica.pythonanywhere.com/logo.png" alt="Logo" width="200"> </a><br>""" + str("<br><br>".join(parsedresults[:10])), mimetype='text/html')
