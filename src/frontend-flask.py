@@ -10,7 +10,7 @@ import time
 from groq import Groq
 
 app = Flask(__name__)
-client = Groq(api_key="YOUR_GROQ_API_KEY_HERE")
+client = Groq(api_key="YOUR_API_KEY")
 
 global then
 then = time.time()
@@ -73,7 +73,7 @@ def search(subpath):
     global then
     global now
     userinput = unquote(subpath)
-    data = requests.get("https://33bf-2607-fea8-84e3-f800-e8c5-75b2-40b2-f82d.ngrok-free.app/search/" + str(userinput.replace(" ", "-")))
+    data = requests.get("https://NGROK_SUBDOMAIN.ngrok-free.app/search/" + str(userinput.replace(" ", "-")))
     if str(data.text) == "[]":
         now = time.time()
         if (now - then) >= 60:
@@ -89,11 +89,11 @@ def search(subpath):
             aioutput = markdown.markdown(str(completion.choices[0].message.content), extensions=['extra'])
             aioutput = bleach.clean(
                 aioutput,
-                tags = list(bleach.sanitizer.ALLOWED_TAGS) + ["p", "br", "h1", "h2", "h3", "code", "pre", "strong", "em", "a", "u", "i", "ul", "ol", "li"],
+                tags = list(bleach.sanitizer.ALLOWED_TAGS) + ["p", "br","h1", "h2", "h3", "code", "pre", "strong", "em", "a", "u", "i", "ul", "ol", "li"],
                 attributes={'a': ['href']},
                 strip=True
             )
-            return Response(f"""<title>Cosmica Search Engine</title><a href="https://cosmica.pythonanywhere.com/"> <img src="https://cosmica.pythonanywhere.com/logo.png" alt="Logo" width="200"> </a><br>""" + f"""Looks like the universe couldn't find what you were looking for. Instead, we'll have the help of an alien to help you!<br><br><div style="white-space: pre-wrap; word-wrap: break-word; max-width: 100%; overflow-wrap: break-word;">""" + aioutput + "</div>", mimetype='text/html')
+            return Response(f"""<title>Cosmica Search Engine</title><a href="https://cosmica.pythonanywhere.com/"> <img src="https://cosmica.pythonanywhere.com/logo.png" alt="Logo" width="200"> </a><br>""" + f"""Looks like the universe couldn't find what you were looking for. Instead, we'll have the help of an alien to help you!<br><div style="max-width: 100%; overflow-wrap: break-word;">""" + aioutput + "</div>", mimetype='text/html')
         else:
             return Response(f"""<title>Cosmica Search Engine</title><a href="https://cosmica.pythonanywhere.com/"> <img src="https://cosmica.pythonanywhere.com/logo.png" alt="Logo" width="200"> </a><br>""" + "No results, sorry! Space can be quite lonely sometimes, but eventually, you'll find something.", mimetype='text/html')
     else:
