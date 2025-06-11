@@ -11,7 +11,7 @@ Cosmica is a free, open source search engine that allows you to browse the web w
 > In order to get a better browsing experience, you should search more general things that are family friendly. We store your searches for prolonged periods of time, so please don't search anything bad.
 
 Its features include:
-- A safe, polite and ethical web scraper.
+- A safe, polite and ethical web scraper; individual index.
 - Fully open source.
 - Simple, user-friendly interface.
 - Custom crawler.
